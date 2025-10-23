@@ -299,15 +299,7 @@ class TechStore {
 
     // Inicializar navegación
     initializeNavigation() {
-        const hamburger = document.getElementById('hamburger');
-        const navActions = document.querySelector('.nav-actions');
-
-        if (hamburger && navActions) {
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navActions.classList.toggle('active');
-            });
-        }
+        // Mobile hamburger removed per user request; no toggle behavior needed.
 
         // CTA button
         const ctaBtn = document.querySelector('.cta-btn');
@@ -540,6 +532,69 @@ function openProductModal(productId) {
             }
         });
     })();
+
+    // Create sticky footer for small screens with total + add button
+    (function createStickyFooterIfMobile() {
+        function removeSticky() {
+            const existing = document.querySelectorAll('.modal-sticky-footer');
+            existing.forEach(e => e.remove());
+        }
+
+        function buildSticky() {
+            removeSticky();
+            const footer = document.createElement('div');
+            footer.className = 'modal-sticky-footer';
+
+            const left = document.createElement('div');
+            left.className = 'sticky-left';
+            left.innerHTML = `<div style="font-size:0.9rem; color:var(--text-secondary)">Total</div><div class="sticky-total" id="sticky-modal-total">${formatPrice(product.price)}</div>`;
+
+            const right = document.createElement('div');
+            right.className = 'sticky-actions';
+            right.innerHTML = `<button class="btn btn-secondary" id="sticky-view-details">Ver detalles</button><button class="btn btn-primary" id="sticky-add-btn">Agregar</button>`;
+
+            footer.appendChild(left);
+            footer.appendChild(right);
+
+            document.body.appendChild(footer);
+
+            // Wire actions
+            const stickyAdd = document.getElementById('sticky-add-btn');
+            const stickyView = document.getElementById('sticky-view-details');
+            const stickyTotal = document.getElementById('sticky-modal-total');
+
+            if (stickyView) stickyView.addEventListener('click', () => {
+                // Scroll modal body to details section
+                const details = modalBody.querySelector('.product-modal-details');
+                if (details) details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            if (stickyAdd) stickyAdd.addEventListener('click', () => {
+                const quantity = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+                // Use same flow as normal add button (close modal then add)
+                closeProductModalAndAdd(product.id, quantity);
+                removeSticky();
+            });
+
+            // update sticky total when qty changes
+            function updateSticky() {
+                const q = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+                if (stickyTotal) stickyTotal.textContent = formatPrice(product.price * q);
+            }
+
+            if (qtyInput) qtyInput.addEventListener('input', updateSticky);
+            if (inc) inc.addEventListener('click', updateSticky);
+            if (dec) dec.addEventListener('click', updateSticky);
+
+        }
+
+        if (window.innerWidth <= 768) {
+            buildSticky();
+        }
+
+        // Remove sticky footer when modal closes via closeModal()
+        // closeModal will remove any elements with class 'modal-sticky-footer' (see below adjustment)
+    })();
 }
 
 // Cerrar modal
@@ -549,6 +604,8 @@ function closeModal() {
         modal.classList.remove('show');
     });
     document.body.style.overflow = '';
+    // Remove any sticky footers created for mobile modals
+    document.querySelectorAll('.modal-sticky-footer').forEach(el => el.remove());
 }
 
 // Event listeners para modales
