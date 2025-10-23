@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Tienda de Tecnología</title>
+    <meta name="description" content="Tienda online de tecnología con los mejores productos y precios">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-laptop-code"></i>
+                    <span>TechStore</span>
+                </div>
+                
+                <div class="nav-search">
+                    <input type="text" id="search-input" placeholder="Buscar productos...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+
+                    <button class="nav-btn" id="wishlist-btn">
+                        <i class="fas fa-heart"></i>
+                        <span>Favoritos</span>
+                        <span class="badge" id="wishlist-count">0</span>
+                    </button>
+                    <button class="nav-btn" id="cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Carrito</span>
+                        <span class="badge" id="cart-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Navegación por categorías -->
+        <div class="categories-nav">
+            <div class="container">
+                <button class="category-btn active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    Todos
+                </button>
+                <button class="category-btn" data-category="laptops">
+                    <i class="fas fa-laptop"></i>
+                    Laptops
+                </button>
+                <button class="category-btn" data-category="smartphones">
+                    <i class="fas fa-mobile-alt"></i>
+                    Smartphones
+                </button>
+                <button class="category-btn" data-category="tablets">
+                    <i class="fas fa-tablet-alt"></i>
+                    Tablets
+                </button>
+                <button class="category-btn" data-category="accessories">
+                    <i class="fas fa-headphones"></i>
+                    Accesorios
+                </button>
+                <button class="category-btn" data-category="gaming">
+                    <i class="fas fa-gamepad"></i>
+                    Gaming
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Principal -->
+    <section class="hero-banner">
+        <div class="banner-content">
+            <h1>Las Mejores Ofertas en Tecnología</h1>
+            <p>Descubre los productos más innovadores con increíbles descuentos</p>
+            <button class="cta-btn">Ver Ofertas</button>
+        </div>
+        <div class="banner-image">
+            <i class="fas fa-laptop"></i>
+        </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label>Precio:</label>
+                    <select id="price-filter">
+                        <option value="all">Todos los precios</option>
+                        <option value="0-500">$0 - $500</option>
+                        <option value="500-1000">$500 - $1,000</option>
+                        <option value="1000-1500">$1,000 - $1,500</option>
+                        <option value="1500+">$1,500+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Marca:</label>
+                    <select id="brand-filter">
+                        <option value="all">Todas las marcas</option>
+                        <option value="apple">Apple</option>
+                        <option value="samsung">Samsung</option>
+                        <option value="dell">Dell</option>
+                        <option value="hp">HP</option>
+                        <option value="sony">Sony</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Ordenar por:</label>
+                    <select id="sort-filter">
+                        <option value="name">Nombre</option>
+                        <option value="price-low">Precio: Menor a Mayor</option>
+                        <option value="price-high">Precio: Mayor a Menor</option>
+                        <option value="rating">Mejor Valorados</option>
+                    </select>
+                </div>
+                <button class="clear-filters" id="clear-filters">Limpiar Filtros</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos -->
+    <main class="main-content">
+        <div class="container">
+            <div class="products-header">
+                <h2>Nuestros Productos</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="products-grid">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>
+            
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando productos...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h3>¡Mantente al día con nuestras ofertas!</h3>
+                <p>Suscríbete y recibe las mejores promociones</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Tu email" required>
+                    <button type="submit">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info modals (Envíos / Devoluciones / Garantía) -->
+    <div class="modal" id="shipping-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="shipping-close">&times;</span>
+            <div class="modal-body" id="shipping-body">
+                <div class="container">
+                    <h2>Envíos</h2>
+                    <p>Ofrecemos envío estándar (5-7 días), exprés (2-3 días) y recogida en tienda. Los costos y tiempos varían según el destino. En el checkout podrás seleccionar la opción disponible para tu dirección.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="returns-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="returns-close">&times;</span>
+            <div class="modal-body" id="returns-body">
+                <div class="container">
+                    <h2>Devoluciones</h2>
+                    <p>Aceptamos devoluciones por fallos de fabricación dentro de los 30 días posteriores a la entrega. Para iniciar el proceso, contacta a soporte con tu número de orden y una descripción del problema; te indicaremos los siguientes pasos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="warranty-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="warranty-close">&times;</span>
+            <div class="modal-body" id="warranty-body">
+                <div class="container">
+                    <h2>Garantía</h2>
+                    <p>Los productos incluyen la garantía del fabricante conforme a sus condiciones. Si tu producto presenta un defecto cubierto por la garantía, gestionaremos la reparación o el reemplazo a través del servicio técnico autorizado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TechStore</h4>
+                    <p>Tu tienda de confianza para productos tecnológicos de calidad.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Productos</h4>
+                    <ul>
+                        <li><a href="#" onclick="filterFooterCategory('laptops')">Laptops</a></li>
+                        <li><a href="#" onclick="filterFooterCategory('smartphones')">Smartphones</a></li>
+                        <li><a href="#" onclick="filterFooterCategory('tablets')">Tablets</a></li>
+                        <li><a href="#" onclick="filterFooterCategory('accessories')">Accesorios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="#help">Centro de Ayuda</a></li>
+                        <li><a href="#" onclick="openShipping()">Envíos</a></li>
+                        <li><a href="#" onclick="openReturns()">Devoluciones</a></li>
+                        <li><a href="#" onclick="openWarranty()">Garantía</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@techstore.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Street</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechStore. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carrito Lateral -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="cart-items" id="cart-items">
+            <!-- Los items del carrito se mostrarán aquí -->
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total: $<span id="cart-total">0.00</span></span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn-secondary" id="clear-cart">Vaciar Carrito</button>
+                <button class="btn-primary" id="checkout-btn">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <div class="modal-body" id="modal-body">
+                <!-- El contenido del producto se cargará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Favoritos -->
+    <div class="modal" id="wishlist-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="wishlist-close">&times;</span>
+            <div class="modal-body" id="wishlist-body">
+                <!-- Contenido de favoritos -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Shipping selection has been moved to the checkout form -->
+
+    <!-- Modal de Checkout -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="checkout-close">&times;</span>
+            <div class="checkout-container">
+                <h2>Finalizar Compra</h2>
+                <form class="checkout-form" id="checkout-form">
+                    <div class="form-section">
+                        <h3>Información Personal</h3>
+                        <div class="form-group">
+                            <input type="text" id="customer-name" placeholder="Nombre completo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="customer-email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="customer-phone" placeholder="Teléfono" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Dirección de Envío</h3>
+                        <div class="form-group">
+                            <input type="text" id="address" placeholder="Dirección" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="city" placeholder="Ciudad" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="postal-code" placeholder="Código Postal" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Método de entrega</h3>
+                        <div class="form-group" style="display:flex; gap:1rem; align-items:center;">
+                            <label style="display:flex; align-items:center; gap:0.5rem;">
+                                <input type="radio" name="delivery" value="pickup" checked>
+                                <span>Retiro en tienda (sin recargo)</span>
+                            </label>
+                            <label style="display:flex; align-items:center; gap:0.5rem;">
+                                <input type="radio" name="delivery" value="delivery">
+                                <span>Envío a domicilio (recargo $15)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Método de Pago</h3>
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="card" checked>
+                                <span>Tarjeta de Crédito</span>
+                                <i class="fas fa-credit-card"></i>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="paypal">
+                                <span>PayPal</span>
+                                <i class="fab fa-paypal"></i>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="card-number" placeholder="Número de tarjeta" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="expiry" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="cvv" placeholder="CVV" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Envío:</span>
+                            <span>$15.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="final-total">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary full-width">Realizar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
